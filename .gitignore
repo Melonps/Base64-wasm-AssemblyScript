@@ -1,8 +1,5 @@
 # Dependencies
 /node_modules/
 
-# Build files (uncomment if you want to ignore build files)
-# /build/
-
-# Vercel
-.vercel
+# Build files
+/build/

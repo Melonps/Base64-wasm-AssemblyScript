@@ -1,32 +1,7 @@
 {
   "name": "wasm-base64",
   "version": "1.0.0",
-  "description": "High-performance Base64 encoder/decoder powered by WebAssembly. Encode text and images with blazing fast speed.",
-  "keywords": [
-    "base64",
-    "encoder",
-    "decoder", 
-    "webassembly",
-    "wasm",
-    "assemblyscript",
-    "image-encoder",
-    "text-encoder",
-    "online-tool",
-    "converter"
-  ],
-  "author": {
-    "name": "Melonps",
-    "url": "https://github.com/Melonps"
-  },
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Melonps/Base64-wasm-AssemblyScript.git"
-  },
-  "homepage": "https://base64-wasm.vercel.app",
-  "bugs": {
-    "url": "https://github.com/Melonps/Base64-wasm-AssemblyScript/issues"
-  },
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "vitest",
