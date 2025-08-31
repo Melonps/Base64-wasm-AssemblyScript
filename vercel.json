@@ -2,8 +2,7 @@
   "buildCommand": "pnpm run asbuild",
   "outputDirectory": ".",
   "installCommand": "pnpm install",
-  "framework": null,
-  "functions": {},
+	"framework": null,
   "headers": [
     {
       "source": "/(.*)",
