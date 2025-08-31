@@ -1,9 +1,16 @@
 import { describe } from "vitest";
 import {
   addPadFillTillSixBit,
+  base64CharToDecimal,
+  base64CharsToDecimals,
+  base64ToText,
   binary2Base64,
+  binary2Bytes,
   bit2DecimalList,
+  bytes2Text,
   char2Binary,
+  decimal2SixBit,
+  decimals2Binary,
   divideEachSixBit,
   filledFourCharWithEqualSign,
   sixBit2Decimal,
@@ -79,7 +86,97 @@ describe("filledFourCharWithEqualSign", () => {
 });
 
 describe("text2Base64", () => {
-  it("should return 'YWI=' for text2Base64('YWJjZGVmZw==')", () => {
+  it("should return 'YWJjZGVmZw==' for text2Base64('abcdefg')", () => {
     expect(text2Base64("abcdefg")).toBe("YWJjZGVmZw==");
+  });
+});
+
+describe("base64CharToDecimal", () => {
+  it("should return 0 for base64CharToDecimal('A')", () => {
+    expect(base64CharToDecimal("A")).toBe(0);
+  });
+
+  it("should return 25 for base64CharToDecimal('Z')", () => {
+    expect(base64CharToDecimal("Z")).toBe(25);
+  });
+
+  it("should return 26 for base64CharToDecimal('a')", () => {
+    expect(base64CharToDecimal("a")).toBe(26);
+  });
+
+  it("should return 62 for base64CharToDecimal('+')", () => {
+    expect(base64CharToDecimal("+")).toBe(62);
+  });
+
+  it("should return 63 for base64CharToDecimal('/')", () => {
+    expect(base64CharToDecimal("/")).toBe(63);
+  });
+});
+
+describe("decimal2SixBit", () => {
+  it("should return '000000' for decimal2SixBit(0)", () => {
+    expect(decimal2SixBit(0)).toBe("000000");
+  });
+
+  it("should return '011001' for decimal2SixBit(25)", () => {
+    expect(decimal2SixBit(25)).toBe("011001");
+  });
+
+  it("should return '111111' for decimal2SixBit(63)", () => {
+    expect(decimal2SixBit(63)).toBe("111111");
+  });
+});
+
+describe("base64CharsToDecimals", () => {
+  it("should return [24, 22, 9] for base64CharsToDecimals('YWJ')", () => {
+    expect(base64CharsToDecimals("YWJ")).toEqual([24, 22, 9]);
+  });
+});
+
+describe("decimals2Binary", () => {
+  it("should return correct binary for decimals2Binary([1, 2, 3, 4])", () => {
+    expect(decimals2Binary([1, 2, 3, 4])).toBe("000001000010000011000100");
+  });
+});
+
+describe("binary2Bytes", () => {
+  it("should return [97, 98, 99] for binary2Bytes('011000010110001001100011')", () => {
+    expect(binary2Bytes("011000010110001001100011")).toEqual([97, 98, 99]);
+  });
+});
+
+describe("bytes2Text", () => {
+  it("should return 'abc' for bytes2Text([97, 98, 99])", () => {
+    expect(bytes2Text([97, 98, 99])).toBe("abc");
+  });
+});
+
+describe("base64ToText", () => {
+  it("should return 'abc' for base64ToText('YWJj')", () => {
+    expect(base64ToText("YWJj")).toBe("abc");
+  });
+
+  it("should return 'abcdefg' for base64ToText('YWJjZGVmZw==')", () => {
+    expect(base64ToText("YWJjZGVmZw==")).toBe("abcdefg");
+  });
+
+  it("should return 'Hello World!' for base64ToText('SGVsbG8gV29ybGQh')", () => {
+    expect(base64ToText("SGVsbG8gV29ybGQh")).toBe("Hello World!");
+  });
+});
+
+describe("Integration tests", () => {
+  it("should encode and decode text correctly", () => {
+    const originalText = "Hello World!";
+    const encoded = text2Base64(originalText);
+    const decoded = base64ToText(encoded);
+    expect(decoded).toBe(originalText);
+  });
+
+  it("should encode and decode complex text correctly", () => {
+    const originalText = "The quick brown fox jumps over the lazy dog";
+    const encoded = text2Base64(originalText);
+    const decoded = base64ToText(encoded);
+    expect(decoded).toBe(originalText);
   });
 });
