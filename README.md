@@ -98,7 +98,7 @@ WebAssembly provides 2-3x faster performance compared to native JavaScript imple
 
 ## License
 
-ISC
+MIT
 
 ---
 
