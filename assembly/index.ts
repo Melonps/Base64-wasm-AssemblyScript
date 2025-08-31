@@ -71,3 +71,91 @@ export function text2Base64(text: string): string {
   const base64WithNonPadding = binary2Base64(binary);
   return filledFourCharWithEqualSign(base64WithNonPadding);
 }
+
+// Base64 decode functions
+export function base64CharToDecimal(char: string): i32 {
+  const index = BASE64_CHARS.indexOf(char);
+  if (index === -1) {
+    throw new Error("Invalid base64 character: " + char);
+  }
+  return index;
+}
+
+export function decimal2SixBit(decimal: i32): string {
+  if (decimal < 0 || decimal > 63) {
+    throw new Error("Decimal must be between 0 and 63.");
+  }
+  let binary = decimal.toString(2);
+  return "000000".slice(binary.length) + binary;
+}
+
+export function base64CharsToDecimals(base64: string): i32[] {
+  const decimals: i32[] = [];
+  for (let i = 0; i < base64.length; i++) {
+    const char = base64.charAt(i);
+    if (char !== "=") {
+      decimals.push(base64CharToDecimal(char));
+    }
+  }
+  return decimals;
+}
+
+export function decimals2Binary(decimals: i32[]): string {
+  let binary = "";
+  for (let i = 0; i < decimals.length; i++) {
+    binary += decimal2SixBit(decimals[i]);
+  }
+  return binary;
+}
+
+export function removePadding(binary: string): string {
+  // Remove trailing zeros that were added as padding during encoding
+  let trimmed = binary;
+  while (trimmed.length > 0 && trimmed.charAt(trimmed.length - 1) === "0") {
+    trimmed = trimmed.slice(0, trimmed.length - 1);
+  }
+  return trimmed;
+}
+
+export function binary2Bytes(binary: string): u8[] {
+  const bytes: u8[] = [];
+  // Process 8-bit chunks
+  for (let i = 0; i < binary.length; i += 8) {
+    const byte = binary.slice(i, i + 8);
+    if (byte.length === 8) {
+      bytes.push(u8(i32.parse(byte, 2)));
+    }
+  }
+  return bytes;
+}
+
+export function bytes2Text(bytes: u8[]): string {
+  let text = "";
+  for (let i = 0; i < bytes.length; i++) {
+    text += String.fromCharCode(bytes[i]);
+  }
+  return text;
+}
+
+export function base64ToText(base64: string): string {
+  // Remove padding characters
+  let cleanBase64 = "";
+  for (let i = 0; i < base64.length; i++) {
+    const char = base64.charAt(i);
+    if (char !== "=") {
+      cleanBase64 += char;
+    }
+  }
+  
+  // Convert base64 characters to decimals
+  const decimals = base64CharsToDecimals(cleanBase64);
+  
+  // Convert decimals to binary string
+  const binary = decimals2Binary(decimals);
+  
+  // Convert binary to bytes
+  const bytes = binary2Bytes(binary);
+  
+  // Convert bytes to text
+  return bytes2Text(bytes);
+}
