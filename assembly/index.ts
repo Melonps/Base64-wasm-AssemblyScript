@@ -29,3 +29,17 @@ export function text2Binary(text: string): string {
   }
   return binary;
 }
+
+export function divideEachSixBit(binary: string): string[] {
+  const result: string[] = [];
+  for (let i = 0; i < binary.length; i += 6) {
+    result.push(binary.slice(i, i + 6));
+  }
+  return result;
+}
+
+export function addPadFillTillSixBit(binary: string): string {
+  const padding = 6 - (binary.length % 6);
+  if (padding === 6) return binary;
+  return binary + "0".repeat(padding);
+}
