@@ -3,6 +3,7 @@
   "outputDirectory": ".",
   "installCommand": "pnpm install",
   "framework": null,
+  "functions": {},
   "headers": [
     {
       "source": "/(.*)",
