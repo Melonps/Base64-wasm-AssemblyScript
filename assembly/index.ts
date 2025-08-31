@@ -1,18 +1,6 @@
 // The entry file of your WebAssembly module.
-
-export function fib(n: i32): i32 {
-  var a = 0,
-    b = 1;
-  if (n > 0) {
-    while (--n) {
-      let t = a + b;
-      a = b;
-      b = t;
-    }
-    return b;
-  }
-  return a;
-}
+const BASE64_CHARS =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 export function char2Binary(char: string): string {
   if (char.length !== 1) {
@@ -44,9 +32,42 @@ export function addPadFillTillSixBit(binary: string): string {
   return binary + "0".repeat(padding);
 }
 
-export function sixBitToDecimal(sixBit: string): i32 {
+export function sixBit2Decimal(sixBit: string): i32 {
   if (sixBit.length !== 6) {
     throw new Error("Input must be a 6-bit binary string.");
   }
   return i32.parse(sixBit, 2);
+}
+
+export function bit2DecimalList(binary: string): i32[] {
+  const sixBit = divideEachSixBit(binary);
+  const filledPadSixBit: string[] = sixBit.map((bit: string) =>
+    addPadFillTillSixBit(bit)
+  );
+  let decimalList: i32[] = [];
+  for (let i = 0; i < filledPadSixBit.length; i++) {
+    decimalList.push(sixBit2Decimal(filledPadSixBit[i]));
+  }
+  return decimalList;
+}
+
+export function binary2Base64(binary: string): string {
+  const decimals = bit2DecimalList(binary);
+  let base64WithNonPadding = "";
+  for (let i = 0; i < decimals.length; i++) {
+    base64WithNonPadding += BASE64_CHARS.charAt(decimals[i]);
+  }
+  return base64WithNonPadding;
+}
+
+export function filledFourCharWithEqualSign(binary: string): string {
+  const padding = 4 - (binary.length % 4);
+  if (padding === 4) return binary;
+  return binary + "=".repeat(padding);
+}
+
+export function text2Base64(text: string): string {
+  const binary = text2Binary(text);
+  const base64WithNonPadding = binary2Base64(binary);
+  return filledFourCharWithEqualSign(base64WithNonPadding);
 }
