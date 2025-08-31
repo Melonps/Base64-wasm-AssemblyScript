@@ -4,6 +4,7 @@ import {
   char2Binary,
   divideEachSixBit,
   fib,
+  sixBitToDecimal,
   text2Binary,
 } from "../build/debug.js";
 
@@ -47,5 +48,11 @@ describe("addPadFillTillSixBit", () => {
 
   it("should return '01100001000000' for addPadFillTillSixBit('01100001')", () => {
     expect(addPadFillTillSixBit("01100001")).toBe("011000010000");
+  });
+});
+
+describe("sixBitToDecimal", () => {
+  it("should return 1 for sixBitToDecimal('000001')", () => {
+    expect(sixBitToDecimal("000001")).toBe(1);
   });
 });

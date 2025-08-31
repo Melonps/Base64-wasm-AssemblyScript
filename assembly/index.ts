@@ -43,3 +43,10 @@ export function addPadFillTillSixBit(binary: string): string {
   if (padding === 6) return binary;
   return binary + "0".repeat(padding);
 }
+
+export function sixBitToDecimal(sixBit: string): i32 {
+  if (sixBit.length !== 6) {
+    throw new Error("Input must be a 6-bit binary string.");
+  }
+  return i32.parse(sixBit, 2);
+}
