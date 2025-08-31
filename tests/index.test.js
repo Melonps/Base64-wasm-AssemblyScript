@@ -1,5 +1,5 @@
 import { describe } from "vitest";
-import { char2Binary, fib } from "../build/debug.js";
+import { char2Binary, fib, text2Binary } from "../build/debug.js";
 
 describe("fib", () => {
   it("should return 55 for fib(10)", () => {
@@ -10,5 +10,11 @@ describe("fib", () => {
 describe("char2Binary", () => {
   it("should return '01100001' for char2Binary('a')", () => {
     expect(char2Binary("a")).toBe("01100001");
+  });
+});
+
+describe("text2Binary", () => {
+  it("should return '01100001' for text2Binary('a')", () => {
+    expect(text2Binary("abc")).toBe("011000010110001001100011");
   });
 });
